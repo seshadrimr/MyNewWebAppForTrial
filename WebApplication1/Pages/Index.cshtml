@@ -1,0 +1,48 @@
+﻿@page  
+@model IndexModel  
+@{  
+    ViewData["Title"] = "Calculator";  
+}  
+
+<div class="text-center">  
+    <h1 class="display-4">Simple Calculator</h1>  
+    <form method="post" novalidate>  
+        <div>  
+            <input type="text" name="FirstNumber" value="@Model.FirstNumber" required 
+                   oninput="validateNumberInput(this)" maxlength="20" />
+            <select name="Operation">  
+                <option value="Add" selected="@(Model.Operation == "Add")">+</option>  
+                <option value="Subtract" selected="@(Model.Operation == "Subtract")">-</option>  
+                <option value="Multiply" selected="@(Model.Operation == "Multiply")">&times;</option>  
+                <option value="Divide" selected="@(Model.Operation == "Divide")">&divide;</option>  
+            </select>  
+            <input type="text" name="SecondNumber" value="@Model.SecondNumber" required 
+                   oninput="validateNumberInput(this)" maxlength="20" />
+            <button type="submit">Calculate</button>  
+        </div>  
+    </form>  
+    @if (Model.Result is not null)  
+    {  
+        <div class="mt-3">  
+            <strong>Result:</strong> @Model.Result  
+        </div>  
+    }  
+    @if (!string.IsNullOrEmpty(Model.ErrorMessage))  
+    {  
+        <div class="mt-3 text-danger">  
+            @Model.ErrorMessage  
+        </div>  
+    }  
+</div>
+
+@section Scripts {
+    <script>
+        function validateNumberInput(input) {
+            // Allow only numbers, one optional leading minus, and one decimal point
+            let value = input.value;
+            // Remove all except digits, one leading minus, and one decimal
+            let match = value.match(/^(-?\d*\.?\d*)/);
+            input.value = match ? match[0] : '';
+        }
+    </script>
+}
